@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: fynd-extension-uat
+    runtime: node
+    buildCommand: "npm install && cd frontend && npm install && npm run build && cd .."
+    startCommand: "npm run start:prod"
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: EXTENSION_API_KEY
+        sync: false
+      - key: EXTENSION_API_SECRET
+        sync: false
+      - key: EXTENSION_BASE_URL
+        sync: false
+      - key: BACKEND_PORT
+        value: 10000
+      - key: FP_API_DOMAIN
+        value: https://api.uat.fyndx1.de
