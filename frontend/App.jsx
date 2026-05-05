@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React from "react";
 
 const globalStyles = `
   html {
@@ -11,7 +10,7 @@ const globalStyles = `
   body {
     margin: 0;
     font-family: 'Inter', sans-serif;
-    background-color: #f8f8f8 !important;
+    background-color: #f8f8f8;
     width: 100%;
     height: 100%;
     -webkit-font-smoothing: antialiased;
@@ -19,198 +18,103 @@ const globalStyles = `
 
   .root {
     font-family: 'Inter', sans-serif;
-    padding: 20px;
-    max-width: 1200px;
+    padding: 40px;
+    max-width: 900px;
     margin: 0 auto;
+    color: #2e2e2e;
   }
 
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-  }
-
-  .header h1 {
-    margin: 0;
-    color: #333;
-    font-size: 32px;
-    font-weight: 600;
-  }
-
-  .refresh-btn {
-    padding: 10px 20px;
-    background-color: #2e31be;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-  }
-
-  .refresh-btn:hover {
-    background-color: #1f22a6;
-  }
-
-  .refresh-btn:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-
-  .loading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px;
-    font-size: 16px;
-    color: #666;
-  }
-
-  .error {
-    background-color: #fee;
-    color: #c33;
-    padding: 20px;
-    border-radius: 4px;
-    margin-bottom: 20px;
-    border-left: 4px solid #c33;
-  }
-
-  .empty {
-    background-color: #f0f0f0;
-    color: #666;
-    padding: 40px;
-    border-radius: 4px;
-    text-align: center;
-    font-size: 16px;
-  }
-
-  .products-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-  }
-
-  .product-card {
+  .card {
     background: white;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 16px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   }
 
-  .product-card:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  .title {
+    margin: 0 0 20px;
+    font-size: 36px;
+    font-weight: 700;
+    color: #1f1f1f;
   }
 
-  .product-name {
-    font-size: 16px;
+  .subtitle {
+    margin: 0 0 24px;
+    color: #555;
+    font-size: 18px;
+    line-height: 1.6;
+  }
+
+  .section {
+    margin-bottom: 24px;
+  }
+
+  .section-title {
+    margin: 0 0 12px;
+    font-size: 20px;
     font-weight: 600;
-    color: #333;
-    margin: 0 0 8px 0;
+    color: #2e31be;
   }
 
-  .product-id {
-    font-size: 12px;
-    color: #999;
+  .section-text {
     margin: 0;
-    word-break: break-all;
+    color: #444;
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  .footer {
+    margin-top: 32px;
+    color: #777;
+    font-size: 14px;
   }
 `;
 
 function App() {
-  const { company_id } = useParams();
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const fetchProducts = async () => {
-    if (!company_id) {
-      setError('Missing company_id in the URL. Open this page via the Fynd extension route.');
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await fetch('/api/products', {
-        credentials: 'include',
-        headers: {
-          Accept: 'application/json',
-        },
-      });
-      const data = await response.json();
-      
-      if (data.success) {
-        setProducts(data.products || []);
-      } else {
-        setError(data.message || 'Failed to fetch products');
-      }
-    } catch (err) {
-      setError(err.message || 'An error occurred while fetching products');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (company_id) {
-      fetchProducts();
-    }
-  }, [company_id]);
-
   return (
     <>
       <style>{globalStyles}</style>
       <div className="root">
-        <div className="header">
-          <h1>Fynd Products</h1>
-          <button 
-            className="refresh-btn" 
-            onClick={fetchProducts}
-            disabled={loading}
-          >
-            {loading ? 'Loading...' : 'Refresh'}
-          </button>
+        <div className="card">
+          <h1 className="title">Welcome to your Fynd Extension</h1>
+          <p className="subtitle">
+            This extension is now running successfully as a simple HTML page.
+            You can use this page to verify your app is deployed correctly before enabling API access.
+          </p>
+
+          <div className="section">
+            <h2 className="section-title">What is Fynd?</h2>
+            <p className="section-text">
+              Fynd is a platform that enables online merchants and partners to build
+              commerce applications and extensions on top of its retail ecosystem.
+              Fynd extensions can access company data, product catalogs, and other
+              platform APIs with proper authentication.
+            </p>
+          </div>
+
+          <div className="section">
+            <h2 className="section-title">How this extension works</h2>
+            <p className="section-text">
+              This extension uses the Fynd extension boilerplate with a Node.js backend
+              and a React frontend. In production, the backend can connect to the Fynd
+              Platform API to fetch company product data securely.
+            </p>
+          </div>
+
+          <div className="section">
+            <h2 className="section-title">Next step</h2>
+            <p className="section-text">
+              If you want, I can next help you re-enable the product list and make
+              sure the data request works from the Fynd partner launch flow.
+            </p>
+          </div>
+
+          <div className="footer">
+            Note: The API route <code>/api/products</code> is protected and requires
+            a valid Fynd session. Opening this page directly is the correct way to
+            verify the deployment UI first.
+          </div>
         </div>
-
-        {!company_id && (
-          <div className="error">
-            <strong>Info:</strong> Open this app via a valid Fynd extension path like <code>/company/&lt;company_id&gt;</code>.
-          </div>
-        )}
-
-        {error && company_id && (
-          <div className="error">
-            <strong>Error:</strong> {error}
-          </div>
-        )}
-
-        {loading && !error && (
-          <div className="loading">Loading products...</div>
-        )}
-
-        {!loading && products.length === 0 && !error && (
-          <div className="empty">No products found</div>
-        )}
-
-        {!loading && products.length > 0 && (
-          <div className="products-grid">
-            {products.map((product) => (
-              <div key={product.uid || product.id} className="product-card">
-                <h3 className="product-name">{product.name}</h3>
-                <p className="product-id">
-                  <strong>UID:</strong> {product.uid || 'N/A'}
-                </p>
-                {product.id && (
-                  <p className="product-id">
-                    <strong>ID:</strong> {product.id}
-                  </p>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
       </div>
     </>
   );
